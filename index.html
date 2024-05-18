@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spell Checker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Spell Checker</h1>
+    <textarea id="inputText" placeholder="Enter text here..."></textarea><br>
+    <button onclick="correctText()">Correct Text</button>
+    <h2>Corrected Text</h2>
+    <p id="correctedText"></p>
+
+    <script>
+        async function correctText() {
+            const text = document.getElementById('inputText').value;
+            const response = await fetch('/correct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            });
+            const data = await response.json();
+            const correctedTextElement = document.getElementById('correctedText');
+            correctedTextElement.innerText = data.corrected_text;
+            correctedTextElement.classList.add('show');
+            correctedTextElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
